@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>The CAP Theorem, A Short Primer</title>
+    <meta name="description" content="CAP Theorem
+                                      Presentation, short primer.">
+    <meta name="author" content="Jack Weaver, weaver.jack@gmail.com">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/default.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+      document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+       </head>
+
+  <body>
+
+    <div class="reveal">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+
+	<section>
+	  <h1>CAP Theorem</h1>
+	  <h3>Consistency, Availability, and Partition-tolerance</h3>
+          <small>
+	    <p>Created by Jack Weaver / <a href="http://twitter.com/teh_jack">@teh_jack</a></p>
+	    <p>Hosted at <a href="http://captheorem-jweaver.rhcloud.com">http://captheorem-jweaver.rhcloud.com</a></p>
+          </small>
+	</section>
+        <section>
+          <h2>Goals</h2>
+          <ol>
+            <li class="fragment">A general understanding of what CAP is, and where
+              various systems fall in the C, A, P Spectrum.</li>
+            <li class="fragment">CAP Theorem Implications</li>
+            <li class="fragment">What CAP Theorem is <i>not</i></li>
+
+            <aside class="notes">Caveat: I use loose definitions
+              here, a more precision-focused talk on CAP would take
+              longer than 10 minutes.  We focus only on the basic
+              understanding in this talk.</aside>
+        </section>
+        <section>
+	  <section>
+	    <h2>What is CAP?</h2>
+	    <p>
+	      Presented by Eric Brewer in 2000, essentially states for a
+	      distributed system, Consistency, Availability and
+	      Partition-tolerance <i>cannot</i> be "achieved" all at the
+	      same time.
+	    </p>
+            <img src="./img/CAP_1.png" />
+
+	    <aside class="notes">
+	      This is not the same as "pick 2", since in distributed
+	      systems we will have to deal with partitions.
+	    </aside>
+	  </section>
+          <section>
+            <h2>Consistency</h2>
+            <p>
+              Across all nodes in the system, the data is consistent
+              (they see the same state of the data).
+            </p>
+            <p><img src="./img/consistency_1.png" /></p>
+          </section>
+          <section>
+            <h2>Availability</h2>
+            <p>
+              All operations on the data store eventually return
+              something.  It's "available" for writes, etc, for
+              non-failing nodes.
+            </p>
+            <img src="./img/availability_1.png" />
+          </section>
+          <section>
+            <h2>Partition-tolerance</h2>
+            <p>
+              Despite some communication failures, or node crashes,
+              service still performs as expected.
+            </p><br/>
+            <p>Networks fail sometimes, we still want systems that can
+              withstand those failures.  Same applies to individual
+              nodes (from the system's view, a node failure is no
+              different than a network failure)</p>
+          </section>
+        </section>
+        <section>
+          <h1>Examples</h1>
+        </section>
+        <section>
+          <section>
+            <h2>Perfect World - No Partitions</h2>
+            <img src="./img/no_partitions_1.png" />
+          </section>
+          <section>
+            <h2>Perfect World - No Partitions</h2>
+            <img src="./img/no_partitions_2.png" />
+          </section>
+          <section>
+            <h2>Perfect World - No Partitions</h2>
+            <img src="./img/no_partitions_3.png" />
+          </section>
+          <section>
+            <h2>Perfect World - No Partitions</h2>
+            <img src="./img/no_partitions_4.png" />
+          </section>
+        </section>
+        <section>
+          <section>
+            <h2>Reality - Partitions</h2>
+            <img src="./img/partitions_1.png">
+          </section>
+          <section>
+            <h2>Reality - Partitions w/Availability</h2>
+            <img src="./img/partitions_2.png">
+          </section>
+          <section>
+            <h2>Reality - Partitions w/Availability</h2>
+            <img src="./img/partitions_3.png">
+          </section>
+          <section>
+            <h2>Reality - Partitions w/Availability</h2>
+            <img src="./img/partitions_4-Avail.png">
+          </section>
+        </section>
+        <section>
+          <section>
+            <h2>Reality - Partitions</h2>
+            <img src="./img/partitions_1.png">
+          </section>
+          <section>
+            <h2>Reality - Partitions</h2>
+            <img src="./img/partitions_2.png">
+          </section>
+          <section>
+            <h2>Reality - Partitions w/Consistency</h2>
+            <img src="./img/partitions_4-Consistency_1.png">
+          </section>
+          <section>
+            <h2>Reality - Partitions w/Consistency</h2>
+            <img src="./img/partitions_4-Consistency_2.png">
+          </section>
+        </section>
+        <section>
+          <h2>CAP Theorem Implications</h2>
+          <p>
+            In an asynchronous network, with a distributed system, it
+            is <i>impossible</i> to implement a "read/write" data
+            object that guarantees the following properties:
+            <ol>
+              <li>Availability in all normal situations</li>
+              <li>Atomic Consistency in all normal situations in
+                which no messages are lost*.</li>
+            </ol>
+          </p>
+          <small>It's easy to drop the message until the system
+            regains connectivity</small>
+        </section>
+        <section>
+          <h2>CAP Theorem Implications</h2>
+          <img src="./img/CAP_Implications.png" />
+        </section>
+        <section>
+          <h2>Where does your system land?</h2>
+          <img src="./img/visual_guide.png">
+        </section>
+        <section>
+          <section>
+            <h1>Systems</h1>
+          </section>
+          <section>
+            <h1>MongoDB</h1>
+            <img src="./img/mongodb.png" />
+          </section>
+          <section>
+            <h2>MongoDB: Configurations</h2>
+            <ul>
+              <li class="fragment">Strongly Consistent by default.  Single-master
+                system, with optional secondaries.</li>
+              <li class="fragment">Secondary reads enable "eventual consistency".</li>
+              <li class="fragment">Highly configurable</li>
+            </ul>
+            <h3 class="fragment">WriteConcern</h3>
+            <blockquote class="fragment">
+              Specifies whether a write operation has succeeded. Write
+              concern allows your application to detect insertion
+              errors or unavailable mongod instances. For replica
+              sets, you can configure write concern to confirm
+              replication to a specified number of members. See Write Concern.
+            </blockquote>
+            <small class="fragment">~ <a href="http://docs.mongodb.org/manual/reference/glossary/#term-write-concern">http://docs.mongodb.org/manual/reference/glossary/#term-write-concern</a></small>
+            <aside class="notes">
+              Mongo provides 3 levels of write concern:
+              unacknowledged, acknowledged, Journaled and Replica
+              Acknowledged.  RA is the strongest and guarantees
+              propagation to other members in the Replica Set.
+            </aside>
+          </section>
+          <section>
+            <h2>MongoDB: Code Sample</h2>
+            <pre><code>
+ var Db = require('mongodb').Db,
+   MongoClient = require('mongodb').MongoClient,
+   Server = require('mongodb').Server,
+   ReplSetServers = require('mongodb').ReplSetServers,
+   ObjectID = require('mongodb').ObjectID,
+   Binary = require('mongodb').Binary,
+   GridStore = require('mongodb').GridStore,
+   Grid = require('mongodb').Grid,
+   Code = require('mongodb').Code,
+   BSON = require('mongodb').pure().BSON,
+   assert = require('assert');
+
+ var db = new Db('test', new Server('locahost', 27017));
+ db.open(function(err, db) {
+   // Fetch a collection to insert document into
+   var collection = db.collection("simple_document_insert_with_function_safe");
+   // Insert a single document
+   collection.insert({hello:'world'
+     , func:function() {}}, {w:1, serializeFunctions:true}, function(err, result) {
+       assert.equal(null, err);
+
+     // Fetch the document
+     collection.findOne({hello:'world'}, function(err, item) {
+       assert.equal(null, err);
+       assert.ok("function() {}", item.code);
+       db.close();
+     })
+   });
+ });
+            </code></pre>
+            <blockquote>
+              w, {Number/String, &gt; -1 || ‘majority’ || tag name} the write concern for the operation where &lt; 1 is no acknowlegement of write and w &gt;= 1, w = ‘majority’ or tag acknowledges the write
+            </blockquote>
+            <small>~ <a href="http://mongodb.github.io/node-mongodb-native/api-generated/collection.html">http://mongodb.github.io/node-mongodb-native/api-generated/collection.html</a></small>
+          </section>
+          <section>
+            <h1>Cassandra</h1>
+            <img src="./img/cassandra.png" />
+          </section>
+          <section>
+            <h2>Cassandra: Overview</h2>
+            <ul>
+              <li class="fragment">Favors Availability</li>
+              <li class="fragment">Tune the settings, but tradeoff Latency vs
+              Consistency</li>
+              <li class="fragment">No row locking, but stronger levels of consistency
+              with increased amounts of latency</li>
+              <li class="fragment">Atomic writes at the row level; all columns are
+              updated (written) or none are.</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Cassandra: Write Consistency Levels</h2>
+            <table>
+              <tr>
+                <th>Level</th>
+                <th>Description</th>
+              </tr>
+              <tr>
+                <td>ANY</td>
+                <td>A write must be written to at least one node. If
+                all replica nodes for the given row key are down, the
+                write can still succeed once a hinted handoff has been
+                written. Note that if all replica nodes are down at
+                write time, an ANY write will not be readable until
+                the replica nodes for that row key have
+                recovered.</td>
+              </tr>
+              <tr>
+                <td>ONE</td>
+                <td>A write must be written to the commit log and
+                memory table of at least one replica node.</td>
+              </tr>
+              <tr>
+                <td>...</td>
+                <td>...</td>
+              </tr>
+              <tr>
+                <td>ALL</td>
+                <td>A write must be written to the commit log and
+                memory table on all replica nodes in the cluster for
+                that row key.</td>
+              </tr>
+            </table>
+            <small>~ <a href="http://www.datastax.com/docs/1.1/dml/data_consistency">http://www.datastax.com/docs/1.1/dml/data_consistency</a></small>
+
+          </section>
+          <section>
+            <h2>Cassandra</h2>
+            <p>
+              On writes, attempt is made to write the row for all
+              replicas responsible for that row.
+            </p>
+            <p>
+              If those replica nodes are not available (partitions,
+              etc), then a "hint" is stored on one node that instructs
+              it to update the replicas when they come back up.
+            </p>
+          </section>
+          <section>
+            <h2>Cassandra - Example</h2>
+            <pre><code>
+                SELECT purchases FROM SALES
+                USING CONSISTENCY QUORUM
+                WHERE customer_id = 7
+            </code></pre>
+            <p>
+              Consistency is decided on <i>each</i> read and write,
+              it's not a system/global setting.  You decide the level
+              of consistency per action.
+            </p>
+          </section>
+        </section>
+        <section>
+          <h2>What this means to us</h2>
+          <p class="fragment">As engineers, we must decide the level
+          of consistency and availability we need.</p>
+          <p class="fragment">Not all "NoSQL" systems are the same,
+          each must be evaluated for each requirement/need.</p>
+          <p class="fragment">There is no free lunch, but you can
+          minimize the symptoms with careful decisions and configurations.</p>
+        </section>
+        <section>
+          <h2>Learn More...</h2>
+          <ol>
+            <ul><a href="http://www.slideshare.net/DataStax/understanding-data-consistency-in-apache-cassandra">http://www.slideshare.net/DataStax/understanding-data-consistency-in-apache-cassandra</a></ul>
+            <ul><a href="http://www.datastax.com/docs/1.1/dml/data_consistency">http://www.datastax.com/docs/1.1/dml/data_consistency</a></ul>
+            <ul>Brewer's PODC Keynote: <a href="http://www.eecs.berkeley.edu/~brewer/cs262b-2004/PODC-keynote.pdf">http://www.eecs.berkeley.edu/~brewer/cs262b-2004/PODC-keynote.pdf</a></ul>
+            <ul>Cloudera CAP Confusion: <a href="http://blog.cloudera.com/blog/2010/04/cap-confusion-problems-with-partition-tolerance/">http://blog.cloudera.com/blog/2010/04/cap-confusion-problems-with-partition-tolerance/</a></ul>
+            <ul>IDC 2012 CAP Theorem Slideshare: <a href="http://www.slideshare.net/YoavFrancis/cap-theorem-theory-implications-and-practices">http://www.slideshare.net/YoavFrancis/cap-theorem-theory-implications-and-practices</a></ul>
+          </ol>
+        </section>
+
+      </div>
+
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.min.js"></script>
+
+    <script>
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+      controls: true,
+      progress: true,
+      history: true,
+      center: true,
+
+      theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+      transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+      // Optional libraries used to extend on reveal.js
+      dependencies: [
+      { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: 'plugin/markdown/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+      { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+      { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+      // { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+      ]
+      });
+
+    </script>
+
+  </body>
+</html>

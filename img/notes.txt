@@ -1,0 +1,5 @@
+0410 - query optimization tree.  Fragmenting Veritcal, for design of distributed databases.  Bond energy method (matrix/sequencing method that is heuristics based).  Relation Affinity measure, queries per site, relation match against queries (3 matrix/tables).  This is a giant method, very confusing, lots of steps.
+
+0415 - More Bond Energy.  2nd method for vertical fragmentation: graph method based on MST (lot easier).  Build the same AA matrix, but then draw a undirected graph; nodes = attributes (A's), paths' weight = their value inverted (1/x). Horizontal Fragment: (2 types) Primary Fragmentation & Derived Fragmentation.
+
+0417 - Buzzword Compliant with: Data Wherehousing, data mining, OLAP (OnLine Analytic Processing).
